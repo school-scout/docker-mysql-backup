@@ -8,7 +8,7 @@ mkdir ${BACKUP_DIR}
 
 # Do a full dump of the database, flushing the binlogs, encrypting the result
 mysqldump -h mysql -u ${MYSQL_BACKUP_USER} -p${MYSQL_BACKUP_PASSWORD} --single-transaction --flush-logs --master-data=2 --all-databases \
-  | gpg -c --batch --passphrase ${MYSQL_BACKUP_ENCRYPTION_PASSPHRASE} >$BACKUP_FILE
+  | gpg2 -c --batch --passphrase ${MYSQL_BACKUP_ENCRYPTION_PASSPHRASE} >$BACKUP_FILE
 
 # Copy SSH key from ENV variable
 echo $MYSQL_BACKUP_SSH_KEY | base64 -d >/root/.ssh/id_rsa
