@@ -11,7 +11,7 @@ mysqldump -h mysql -u ${MYSQL_BACKUP_USER} -p${MYSQL_BACKUP_PASSWORD} --single-t
   | gpg -c --batch --passphrase ${MYSQL_BACKUP_ENCRYPTION_PASSPHRASE} >$BACKUP_FILE
 
 # Copy SSH key from ENV variable
-echo $MYSQL_BACKUP_SSH_KEY | sed "s/\\$/\n/g" | sed "s/^ //g" >/root/.ssh/id_rsa
+echo $MYSQL_BACKUP_SSH_KEY | base64 -d >/root/.ssh/id_rsa
 chmod 0600 /root/.ssh/id_rsa
 
 # Copy dump to remote server
