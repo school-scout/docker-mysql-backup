@@ -15,4 +15,4 @@ echo $MYSQL_BACKUP_SSH_KEY | sed "s/\\$/\n/g" | sed "s/^ //g" >/root/.ssh/id_rsa
 chmod 0600 /root/.ssh/id_rsa
 
 # Copy dump to remote server
-scp -r -oStrictHostKeyChecking=no $BACKUP_DIR $MYSQL_BACKUP_SSH_ADDRESS
+scp -r -P ${MYSQL_BACKUP_SSH_PORT:=22} -oStrictHostKeyChecking=no $BACKUP_DIR $MYSQL_BACKUP_SSH_ADDRESS
