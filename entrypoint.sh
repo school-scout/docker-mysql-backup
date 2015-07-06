@@ -16,3 +16,5 @@ chmod 0600 /root/.ssh/id_rsa
 
 # Copy dump to remote server
 scp -r -P ${MYSQL_BACKUP_SSH_PORT:=22} -oStrictHostKeyChecking=no $BACKUP_DIR $MYSQL_BACKUP_SSH_ADDRESS
+
+echo "Backup done."
