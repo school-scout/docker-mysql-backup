@@ -5,6 +5,7 @@ This image allows backing up MySQL Docker containers (running on the same machin
 Generic ENV variables needed:
 
 * `MYSQL_BACKUP_USER`, `MYSQL_BACKUP_PASSWORD`: User and password for connecting to the MySQL database
+* `MYSQL_BACKUP_DATABASE`: Database to backup. Optional. Backup all databases otherwise
 * `MYSQL_BACKUP_SSH_ADDRESS`, `MYSQL_BACKUP_SSH_PORT`, `MYSQL_BACKUP_SSH_KEY`: SSH Credentials for the target server where backups will be stored. The key must be base64 encoded (see below).
 * `MYSQL_BACKUP_ENCRYPTION_PASSPHRASE`: Password for encrypting the backup
 

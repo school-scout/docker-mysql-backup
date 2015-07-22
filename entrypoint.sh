@@ -2,6 +2,7 @@
 set -e
 
 MYSQL_HOST=${MYSQL_HOST:-mysql}
+MYSQL_BACKUP_DATABASE=${MYSQL_BACKUP_DATABASE:---all-databases}
 BACKUP_DIR=/backup/${MYSQL_CONTAINER_NAME:-$MYSQL_HOST}
 BACKUP_FILE=${BACKUP_DIR}/$(date --utc +%Y-%m-%d).sql.gpg
 
@@ -9,7 +10,7 @@ mkdir ${BACKUP_DIR}
 
 # Do a full dump of the database, flushing the binlogs, encrypting the result
 echo Dumping data
-mysqldump -h $MYSQL_HOST -u ${MYSQL_BACKUP_USER} -p${MYSQL_BACKUP_PASSWORD} --single-transaction --flush-logs --master-data=2 --all-databases \
+mysqldump -h $MYSQL_HOST -u ${MYSQL_BACKUP_USER} -p${MYSQL_BACKUP_PASSWORD} --single-transaction --flush-logs --master-data=2 $MYSQL_BACKUP_DATABASE \
   | gpg2 -c --batch --passphrase ${MYSQL_BACKUP_ENCRYPTION_PASSPHRASE} >$BACKUP_FILE
 if [ ${PIPESTATUS[0]} != 0 ]; then
   echo Backup failed!

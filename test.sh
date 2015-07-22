@@ -37,6 +37,7 @@ if [ $1 == 'docker' ]; then
 else
   docker run -it --rm \
     -e MYSQL_HOST=$mysql_ip \
+    -e MYSQL_BACKUP_DATABASE=mysql \
     -e MYSQL_BACKUP_USER=root -e MYSQL_BACKUP_PASSWORD=$mysql_password \
     -e MYSQL_BACKUP_ENCRYPTION_PASSPHRASE=test123 \
     -e MYSQL_BACKUP_SSH_ADDRESS=data@$ssh_ip: -e MYSQL_BACKUP_SSH_KEY=$key -e MYSQL_BACKUP_SSH_PORT=22 \
