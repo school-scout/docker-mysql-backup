@@ -11,6 +11,10 @@ mkdir ${BACKUP_DIR}
 echo Dumping data
 mysqldump -h $MYSQL_HOST -u ${MYSQL_BACKUP_USER} -p${MYSQL_BACKUP_PASSWORD} --single-transaction --flush-logs --master-data=2 --all-databases \
   | gpg2 -c --batch --passphrase ${MYSQL_BACKUP_ENCRYPTION_PASSPHRASE} >$BACKUP_FILE
+if [ ${PIPESTATUS[0]} != 0 ]; then
+  echo Backup failed!
+  exit 1
+fi
 
 # Copy SSH key from ENV variable
 echo $MYSQL_BACKUP_SSH_KEY | base64 -d >/root/.ssh/id_rsa
