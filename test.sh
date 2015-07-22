@@ -27,12 +27,21 @@ ssh_ip=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' $ssh_cid)
 while ! nc -z $mysql_ip 3306; do sleep 1; done
 
 # Start backup
-docker run -it --rm --link $mysql_cid:mysql --volumes-from $mysql_cid \
-  -e MYSQL_CONTAINER_NAME=$mysql_cid \
-  -e MYSQL_BACKUP_USER=root -e MYSQL_BACKUP_PASSWORD=$mysql_password \
-  -e MYSQL_BACKUP_ENCRYPTION_PASSPHRASE=test123 \
-  -e MYSQL_BACKUP_SSH_ADDRESS=data@$ssh_ip: -e MYSQL_BACKUP_SSH_KEY=$key -e MYSQL_BACKUP_SSH_PORT=22 \
-  schoolscout/mysql-backup
+if [ $1 == 'docker' ]; then
+  docker run -it --rm --link $mysql_cid:mysql --volumes-from $mysql_cid \
+    -e MYSQL_CONTAINER_NAME=$mysql_cid \
+    -e MYSQL_BACKUP_USER=root -e MYSQL_BACKUP_PASSWORD=$mysql_password \
+    -e MYSQL_BACKUP_ENCRYPTION_PASSPHRASE=test123 \
+    -e MYSQL_BACKUP_SSH_ADDRESS=data@$ssh_ip: -e MYSQL_BACKUP_SSH_KEY=$key -e MYSQL_BACKUP_SSH_PORT=22 \
+    schoolscout/mysql-backup
+else
+  docker run -it --rm \
+    -e MYSQL_HOST=$mysql_ip \
+    -e MYSQL_BACKUP_USER=root -e MYSQL_BACKUP_PASSWORD=$mysql_password \
+    -e MYSQL_BACKUP_ENCRYPTION_PASSPHRASE=test123 \
+    -e MYSQL_BACKUP_SSH_ADDRESS=data@$ssh_ip: -e MYSQL_BACKUP_SSH_KEY=$key -e MYSQL_BACKUP_SSH_PORT=22 \
+    schoolscout/mysql-backup
+fi
 
 # Show results
 echo Contents of backup directory:
