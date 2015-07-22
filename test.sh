@@ -11,6 +11,7 @@ trap cleanup 0
 
 # Create MySQL container
 mysql_cid=$(docker run -d -e MYSQLD_LOG_BIN=binlog -e MYSQL_ROOT_PASSWORD=$mysql_password schoolscout/custom-mysql-with-ssl:5.5)
+mysql_ip=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' $mysql_cid)
 
 # Create keypair
 keyfile=$(mktemp -u)
@@ -23,7 +24,7 @@ ssh_cid=$(docker run -d -e AUTHORIZED_KEYS=$pubkey schoolscout/scp-server)
 ssh_ip=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' $ssh_cid)
 
 # Wait for mysql..
-sleep 7
+while ! nc -z $mysql_ip 3306; do sleep 1; done
 
 # Start backup
 docker run -it --rm --link $mysql_cid:mysql --volumes-from $mysql_cid \
