@@ -16,7 +16,8 @@ Replace `MYSQL_CONTAINER_NAME` with the name of the target MySQL container. Exam
     MYSQL_CONTAINER_NAME=mysql-server
     MYSQL_BACKUP_SSH_KEY=$(base64 -w0 id_rsa)
 
-    docker run --rm --link ${MYSQL_CONTAINER_NAME}:mysql --volumes-from=${MYSQL_CONTAINER_NAME} \
+    docker run --rm \
+      --link ${MYSQL_CONTAINER_NAME}:mysql \
       -e MYSQL_BACKUP_USER=backup -e MYSQL_BACKUP_PASSWORD=password \
       -e MYSQL_BACKUP_SSH_ADDRESS=data@backup: -e MYSQL_BACKUP_SSH_PORT=22 -e MYSQL_BACKUP_SSH_KEY=$MYSQL_BACKUP_SSH_KEY \
       -e MYSQL_BACKUP_ENCRYPTION_PASSPHRASE=secret-passphrase \
