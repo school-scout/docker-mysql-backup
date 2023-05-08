@@ -1,11 +1,8 @@
-FROM debian:jessie
+FROM alpine:3.17.2
 
-RUN apt-get update
-RUN apt-get -y install mysql-client openssh-client gnupg2
-
-RUN mkdir /backup \
- && mkdir /root/.ssh \
- && chmod 0700 /root/.ssh
+RUN apk add --no-cache bash gpg gpg-agent mysql-client rclone \
+  && mkdir -p /root/.config/rclone \
+  && touch /root/.config/rclone/rclone.conf
 
 COPY entrypoint.sh /
 CMD /entrypoint.sh

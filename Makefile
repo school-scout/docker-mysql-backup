@@ -3,13 +3,8 @@ IMAGE = schoolscout/mysql-backup
 build:
 		docker build -t ${IMAGE} .
 
-test: test-docker test-external
+test: build
+		./test.sh
 
-test-docker: build
-		./test.sh docker
-
-test-external: build
-		./test.sh external
-
-push: build test
+push: build
 		docker push ${IMAGE}
