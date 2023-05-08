@@ -24,7 +24,7 @@ Example:
       -e RCLONE_CONFIG_MYS3_ACCESS_KEY_ID=minioadmin \
       -e RCLONE_CONFIG_MYS3_SECRET_ACCESS_KEY=minioadmin \
       -e RCLONE_CONFIG_MYS3_ENDPOINT=https://my.minio.host \
-      schoolscout/mysql-backup
+      schoolscout/mysql-backup:0.2.0
 
 ## Privileges needed on the MySQL server
 

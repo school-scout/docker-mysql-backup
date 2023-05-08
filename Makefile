@@ -1,4 +1,4 @@
-IMAGE = schoolscout/mysql-backup
+IMAGE = schoolscout/mysql-backup:0.2.0
 
 build:
 		docker build -t ${IMAGE} .
